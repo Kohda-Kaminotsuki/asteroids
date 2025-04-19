@@ -2,24 +2,31 @@ import pygame
 from circleshape import *
 from player import *
 from constants import *
-dt = 0
+clock = pygame.time.Clock()
+dt = clock.tick(60)/1000
 player = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
 def main():
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
+    #print(player.rotation)
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    clock = pygame.time.Clock()
-    print(f" {player.radius}")
     screen.fill("black")
     #player.draw(screen)
     while True == True:
-        player.draw(screen)
+        print(f"StartLoop:{player.rotation}")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+        player.update(dt)
+        print(f"After Update: {player.rotation}")
+        screen.fill("black")
+        player.draw(screen)
+        print(f"After Draw: {player.rotation}")
         pygame.display.update()
+        print(f"After Display Update: {player.rotation}")
+        #print(dt)
+        #print(player.rotation)
         clock.tick(60)
-        dt = clock.tick(60)/1000
 if __name__ == "__main__":
     main()
