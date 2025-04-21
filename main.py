@@ -4,6 +4,9 @@ from player import *
 from constants import *
 clock = pygame.time.Clock()
 dt = clock.tick(60)/1000
+updatable = pygame.sprite.Group()
+drawable = pygame.sprite.Group()
+Player.containers = (updatable, drawable)
 player = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
 def main():
     print("Starting Asteroids!")
@@ -18,10 +21,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        player.update(dt)
+        for entity in updatable:
+            entity.update(dt)
         print(f"After Update: {player.rotation}")
         screen.fill("black")
-        player.draw(screen)
+        for entity in drawable:
+            entity.draw(screen)
         print(f"After Draw: {player.rotation}")
         pygame.display.update()
         print(f"After Display Update: {player.rotation}")
