@@ -2,12 +2,23 @@ import pygame
 from circleshape import *
 from player import *
 from constants import *
+from constants import ASTEROID_SPAWN_RATE
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 clock = pygame.time.Clock()
 dt = clock.tick(60)/1000
+killer = pygame.sprite.Group()
+asteroids = pygame.sprite.Group()
 updatable = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
+shots = pygame.sprite.Group()
+Shot.containers = (shots, drawable, updatable)
+Asteroid.containers = (asteroids, killer, updatable, drawable)
+AsteroidField.containers = (updatable)
+asteroidfield = AsteroidField()
 Player.containers = (updatable, drawable)
 player = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 def main():
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
@@ -20,6 +31,10 @@ def main():
         print(f"StartLoop:{player.rotation}")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                return
+        for entity in killer:
+            if entity.collision_check(player) == True:
+                print("Game Over!")
                 return
         for entity in updatable:
             entity.update(dt)
