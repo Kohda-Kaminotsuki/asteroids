@@ -36,6 +36,11 @@ def main():
             if entity.collision_check(player) == True:
                 print("Game Over!")
                 return
+        for entity in killer:
+            for shot in shots:
+                if entity.collision_check(shot) == True:
+                    entity.split()
+                    shot.kill()
         for entity in updatable:
             entity.update(dt)
         print(f"After Update: {player.rotation}")
